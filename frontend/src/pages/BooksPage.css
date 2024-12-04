@@ -1,0 +1,23 @@
+.books-page {
+  background-color: #f5f5dc; /* Consistent beige background */
+  color: #006400; /* Dark Green for text */
+}
+
+.books-page h1 {
+  color: #ffd700; /* Gold for headings */
+}
+
+.books-page table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.books-page th, .books-page td {
+  border: 1px solid #006400; /* Green borders */
+  padding: 10px;
+  text-align: left;
+}
+
+.books-page tr:nth-child(even) {
+  background-color: #f0fff0; /* Lighter green for alternate rows */
+}

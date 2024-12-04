@@ -1,0 +1,16 @@
+.admin-dashboard {
+  background-color: #f5f5dc; /* Beige for a warm feel */
+  color: #006400; /* Dark green for text */
+}
+
+.admin-dashboard h1 {
+  color: #ffd700; /* Gold for headings */
+}
+
+.admin-dashboard a {
+  color: #006400; /* Maintain green links */
+}
+
+.admin-dashboard a:hover {
+  color: #ffd700; /* Gold on hover */
+}
