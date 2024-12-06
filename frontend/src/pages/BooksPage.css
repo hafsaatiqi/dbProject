@@ -3,9 +3,11 @@
   color: #006400; /* Dark Green for text */
 }
 
-.books-page h1 {
-  color: #ffd700; /* Gold for headings */
+.books-page h1.books-heading {
+  color: black !important; /* Ensure the color remains black */
 }
+
+
 
 .books-page table {
   width: 100%;

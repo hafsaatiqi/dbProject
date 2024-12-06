@@ -1,0 +1,39 @@
+/* General Page Styling */
+.borrowing-page {
+  background-color: #f5f5dc !important;
+  color: #006400 !important;
+  padding: 20px !important;
+}
+
+
+.borrowing-page h1 {
+  color: #ffd700; /* Gold for headings */
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+/* Table Styling */
+.borrowing-page table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.borrowing-page th, .borrowing-page td {
+  border: 1px solid #006400; /* Green borders */
+  padding: 10px;
+  text-align: left;
+}
+
+.borrowing-page th {
+  background-color: #006400; /* Dark green background for table headers */
+  color: #fff; /* White text for headers */
+}
+
+.borrowing-page tr:nth-child(even) {
+  background-color: #f0fff0; /* Light green background for alternate rows */
+}
+
+.borrowing-page tr:hover {
+  background-color: #d3ffd3; /* Slightly darker green for hover effect */
+}
