@@ -1,9 +1,9 @@
 // src/pages/AdminDashboardPage.js
 import React,{useref} from 'react';
-
+import './AdminDashboardPage.css'
 const AdminDashboardPage = () => {
   return (
-    <div>
+    <div className="admin-dashboard" >
       <h1>Admin Dashboard</h1>
       <p>Welcome to the Admin Dashboard. Here you can manage books, members, and borrowings.</p>
       <ul>

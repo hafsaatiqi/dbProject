@@ -1,5 +1,6 @@
 // src/pages/BooksPage.js
 import React, { useState, useEffect } from 'react';
+import './BooksPage.css';
 
 const BooksPage = () => {
   const [books, setBooks] = useState([]);
@@ -18,8 +19,8 @@ const BooksPage = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Books List</h1>
+    <div className="bookspage">
+      <h1 className="books-heading">Books List</h1>
       <table>
         <thead>
           <tr>
@@ -40,6 +41,7 @@ const BooksPage = () => {
       </table>
     </div>
   );
+  
 };
 
 export default BooksPage;

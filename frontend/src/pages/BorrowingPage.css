@@ -1,50 +1,39 @@
 /* General Page Styling */
-.bookspage {
+.borrowing-page {
   background-color: white !important;
   color: #006400 !important;
   padding: 20px !important;
 }
 
-.bookspage h1 {
-  color: black; /* Gold for headings */
+
+.borrowing-page h1 {
+  color:black; /* Gold for headings */
   font-size: 2rem;
   margin-bottom: 20px;
 }
 
 /* Table Styling */
-.bookspage table {
+.borrowing-page table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
 }
 
-.bookspage th, .bookspage td {
+.borrowing-page th, .borrowing-page td {
   border: 1px solid #006400; /* Green borders */
   padding: 10px;
   text-align: left;
 }
 
-.bookspage th {
+.borrowing-page th {
   background-color: #006400; /* Dark green background for table headers */
   color: #fff; /* White text for headers */
 }
 
-/* Only the header row should have the background color */
-.bookspage thead tr {
-  background-color: #006400; /* Dark green for the header row */
-}
-
-/* Data rows should have alternating light green backgrounds */
-.bookspage tbody tr:nth-child(even) {
+.borrowing-page tr:nth-child(even) {
   background-color: #f0fff0; /* Light green background for alternate rows */
 }
 
-/* Hover effect for data rows */
-.bookspage tbody tr:hover {
+.borrowing-page tr:hover {
   background-color: #d3ffd3; /* Slightly darker green for hover effect */
-}
-
-/* Ensure first row in the body is not affected */
-.bookspage tbody tr:first-child {
-  background-color: transparent; /* Prevent first row in body from being styled */
 }

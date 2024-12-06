@@ -1,5 +1,6 @@
 // src/pages/BorrowingPage.js
 import React, { useState, useEffect } from 'react';
+import './BorrowingPage.css';  // Import the CSS file
 
 const BorrowingPage = () => {
   const [borrowedBooks, setBorrowedBooks] = useState([]);
@@ -18,7 +19,7 @@ const BorrowingPage = () => {
   }, []);
 
   return (
-    <div>
+    <div className="borrowing-page">
       <h1>Borrowed Books</h1>
       <table>
         <thead>
