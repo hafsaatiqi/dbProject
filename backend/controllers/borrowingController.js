@@ -1,5 +1,7 @@
 const Borrowing = require('../models/borrowing');
 const Fine = require('../models/fine');
+const {calculateFine} = require('./utils/helpers');
+
 const { ObjectId } = mongoose.Types;
 // Get all borrowings
 const getBorrowings = async (req, res) => {

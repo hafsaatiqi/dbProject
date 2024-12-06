@@ -58,7 +58,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
-
+const {hash1}  = require('./utils/helpers');
 const router = express.Router();
 
 // Middleware to verify admin access
@@ -87,8 +87,7 @@ router.post('/signup', async (req, res) => {
     const userExists = await User.findOne({ email });
     if (userExists) return res.status(400).json({ message: 'User already exists' });
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-
+    const hashedPassword = hash1(password);
     // Set the role to 'member' by default
     const newUser = new User({ 
       username, 
@@ -112,8 +111,8 @@ router.post('/login', async (req, res) => {
   try {
     const user = await User.findOne({ email });
     if (!user) return res.status(400).json({ message: 'Invalid credentials' });
-
-    const isMatch = await user.comparePassword(password);
+    const hashed = hash1(password);
+    const isMatch = await user.comparePassword(hashed);
     if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
     // Create JWT token
