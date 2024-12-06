@@ -4,7 +4,7 @@ const { getFines, addFine, updateFine, deleteFine, getMemberFines } = require('.
 const { authMiddleware } = require('../middleware/authMiddleware');
 
 // Routes
-router.get('/', getFines);
+router.get('/myfines', getFines);
 router.post('/', addFine);
 router.put('/:id', updateFine);
 router.delete('/:id', deleteFine);

@@ -2,6 +2,7 @@ const Borrowing = require('../models/borrowing');
 const Fine = require('../models/fines');
 const {calculateFine} = require('../utils/helpers');
 const mongoose = require('mongoose');
+const { check, validationResult } = require('express-validator');
 
 const { ObjectId } = mongoose.Types;
 // Get all borrowings
@@ -15,17 +16,46 @@ const getBorrowings = async (req, res) => {
 };
 
 // Add a new borrowing
-const addBorrowing = async (req, res) => {
-  const newBorrowing = new Borrowing(req.body);
-  try {
-    const savedBorrowing = await newBorrowing.save();
-    res.status(201).json(savedBorrowing);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-};
+const addBorrowing = [
+  // Validation rules
+  check('memberId').notEmpty().withMessage('Member ID is required'),
+  check('bookId').notEmpty().withMessage('Book ID is required'),
+  check('dueDate').isDate().withMessage('Due date must be a valid date'),
 
-// Update a borrowing
+  // Actual handler
+  async (req, res) => {
+    // Check for validation errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { memberId, bookId } = req.body; // Extract values from the request body
+    const borrowDate = new Date(); // Current date when the book is borrowed
+    const dueDate = new Date(borrowDate); // Copy the borrowDate
+    dueDate.setDate(borrowDate.getDate() + 10);
+    // Create a new borrowing record
+    const newBorrowing = new Borrowing({
+      borrowingId: new mongoose.Types.ObjectId().toString(), // Generate a unique borrowing ID
+      memberId, // Member who is borrowing the book
+      bookId, // The book being borrowed
+      borrowDate,  
+      dueDate,  // Due date of the book
+      returnDate: null,
+      isReturned: false, // Initially, the book is not returned
+    });
+
+    try {
+      // Save the new borrowing record
+      const savedBorrowing = await newBorrowing.save();
+      res.status(201).json(savedBorrowing); // Return the saved record
+    } catch (err) {
+      res.status(400).json({ message: err.message });
+    }
+  }
+];
+
+// Update a borrowing (delete this,useless)
 const updateBorrowing = async (req, res) => {
   try {
     const updatedBorrowing = await Borrowing.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -72,8 +102,8 @@ const returnBook = async (req, res) => {
     if (fineAmount > 0) {
       const newFine = new Fine({
         fineId:new ObjectId(),
-        memberId: borrowing.memberId._id,
-        borrowingId: borrowing._id,
+        memberId: borrowing.memberId,
+        borrowingId: borrowing.borrowingId,
         amount: fineAmount,
         paymentStatus: false,
         fineDate: new Date()
@@ -89,4 +119,4 @@ const returnBook = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-module.exports = { getBorrowings, addBorrowing, updateBorrowing, deleteBorrowing };
+module.exports = { getBorrowings, addBorrowing, updateBorrowing, deleteBorrowing, returnBook};

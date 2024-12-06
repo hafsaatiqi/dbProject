@@ -1,14 +1,14 @@
 const Fine = require('../models/fines');
 
 // Get all fines
-const getFines = async (req, res) => {
+/*const getFines = async (req, res) => {
   try {
     const fines = await Fine.find();
     res.status(200).json(fines);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
-};
+};*/
 
 // Add a new fine
 const addFine = async (req, res) => {
@@ -41,7 +41,7 @@ const deleteFine = async (req, res) => {
   }
 };
 
-const getMemberFines = async (req, res) => {
+const getFines = async (req, res) => {
   try {
     const memberId = req.user.id; // Assuming authentication middleware provides the member ID
 

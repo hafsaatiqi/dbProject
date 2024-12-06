@@ -5,8 +5,8 @@ const { authMiddleware } = require('../middleware/authMiddleware');
 
 // Routes
 router.get('/', getBorrowings);
-router.post('/', addBorrowing);
+router.post('/borrow', addBorrowing);
 router.put('/:id', updateBorrowing);
 router.delete('/:id', deleteBorrowing);
-//router.put('/return/:borrowingId', authMiddleware, returnBook);
+router.put('/return/:borrowingId', authMiddleware, returnBook);
 module.exports = router;
