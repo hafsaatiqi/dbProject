@@ -1,0 +1,39 @@
+/* General container styling for the Member Profile Page */
+.member-profile-page {
+  background-color: #f5f5dc; /* Beige background */
+  color: #006400; /* Dark green for text */
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  border: 1px solid #006400; /* Green border */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for elevation */
+}
+
+/* Heading styling */
+.member-profile-page h1 {
+  font-size: 24px;
+  color: black; /* Black for headings */
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Paragraphs for member details */
+.member-profile-page p {
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 10px 0;
+}
+
+/* Strong tags for labels in details */
+.member-profile-page p strong {
+  color: #006400; /* Highlight labels with dark green */
+}
+
+/* Loading text styling */
+.member-profile-page .loading-text {
+  text-align: center;
+  color: #808080; /* Gray for loading text */
+  font-style: italic;
+}

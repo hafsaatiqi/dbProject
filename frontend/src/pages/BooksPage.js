@@ -19,7 +19,7 @@ const BooksPage = () => {
   }, []);
 
   return (
-    <div className="books-page">
+    <div className="bookspage">
       <h1 className="books-heading">Books List</h1>
       <table>
         <thead>

@@ -1,5 +1,5 @@
-// src/pages/MemberProfilePage.js
 import React, { useState, useEffect } from 'react';
+import './MemberProfilePage.css';
 
 const MemberProfilePage = () => {
   const [member, setMember] = useState(null);
@@ -20,7 +20,7 @@ const MemberProfilePage = () => {
   }, []);
 
   return (
-    <div>
+    <div className="member-profile-page">
       <h1>Member Profile</h1>
       {member ? (
         <div>
@@ -29,7 +29,7 @@ const MemberProfilePage = () => {
           <p><strong>Membership Expiry:</strong> {member.membershipExpiry}</p>
         </div>
       ) : (
-        <p>Loading member details...</p>
+        <p className="loading-text">Loading member details...</p>
       )}
     </div>
   );

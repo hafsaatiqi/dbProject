@@ -33,6 +33,11 @@ const librarianRoutes = require('./routes/librarianRoutes');
 const borrowingRoutes = require('./routes/borrowingRoutes');
 const reservationRoutes = require('./routes/reservationRoutes');
 const fineRoutes = require('./routes/fineRoutes');
+//!import auth route:
+const authRoutes = require('./routes/authRoutes');
+//! Import userRoutes
+const userRoutes = require('./routes/userRoutes');
+
 
 // Use Routes
 app.use('/api/books', bookRoutes);
@@ -41,6 +46,11 @@ app.use('/api/librarians', librarianRoutes);
 app.use('/api/borrowings', borrowingRoutes);
 app.use('/api/reservations', reservationRoutes);
 app.use('/api/fines', fineRoutes);
+//!use authRoute
+app.use('/api/auth', authRoutes);
+//! Use userRoutes
+app.use('/api/users', userRoutes);
+
 
 // Server Setup
 const PORT = process.env.PORT || 5000;

@@ -7,6 +7,7 @@ const BorrowingSchema = new mongoose.Schema({
   borrowDate: { type: Date, default: Date.now },
   dueDate: { type: Date, required: true },
   returnDate: { type: Date },
+  isReturned: { type: Boolean, default: false },
 });
 
 module.exports = mongoose.model('Borrowing', BorrowingSchema);

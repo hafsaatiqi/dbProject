@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken');
-const User = require('../models/user');
 
-//authentication middleware
+// authentication middleware
 const authMiddleware = (req, res, next) => {
-  const token = req.header('x-auth-token');
+  // Expecting the token in the Authorization header as Bearer <token>
+  const token = req.header('Authorization')?.split(' ')[1];
   if (!token) return res.status(401).json({ message: 'No token, authorization denied' });
 
   try {
@@ -17,12 +17,14 @@ const authMiddleware = (req, res, next) => {
 
 // Check Role Middleware (for different roles)
 const checkRole = (roles) => {
-    return (req, res, next) => {
-      if (!roles.includes(req.user.role)) {
-        return res.status(403).json({ message: 'Access denied, insufficient permissions' });
-      }
-      next();
-    };
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return res.status(403).json({ message: 'Access denied, insufficient permissions' });
+    }
+    next();
   };
+};
 
 module.exports = { authMiddleware, checkRole };
+
+

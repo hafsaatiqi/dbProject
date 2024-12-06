@@ -1,13 +1,13 @@
 /* General Page Styling */
 .borrowing-page {
-  background-color: #f5f5dc !important;
+  background-color: white !important;
   color: #006400 !important;
   padding: 20px !important;
 }
 
 
 .borrowing-page h1 {
-  color: #ffd700; /* Gold for headings */
+  color:black; /* Gold for headings */
   font-size: 2rem;
   margin-bottom: 20px;
 }
