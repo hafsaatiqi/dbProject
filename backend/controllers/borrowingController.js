@@ -18,10 +18,26 @@ const getBorrowings = async (req, res) => {
 // Add a new borrowing
 const addBorrowing = [
   // Validation rules
-  check('memberId').notEmpty().withMessage('Member ID is required'),
-  check('bookId').notEmpty().withMessage('Book ID is required'),
-  check('dueDate').isDate().withMessage('Due date must be a valid date'),
-
+  check('userId').notEmpty().withMessage('Member ID is required')
+    .custom(async (value) => {
+      const user = await User.findOne({userId:value});
+      if (!user) {
+        throw new Error('Member ID does not exist');
+      }
+      return true;
+    }),
+  check('bookId').notEmpty().withMessage('Book ID is required')
+    .custom(async (value) => {
+      const book = await Book.findOne({bookId:value});
+      if (!book) {
+        throw new Error('Book ID does not exist');
+      }
+      if (book.availableCopies === 0) {
+        throw new Error('No available copies left to borrow');
+      }
+      return true;
+    }),
+  
   // Actual handler
   async (req, res) => {
     // Check for validation errors
@@ -29,15 +45,24 @@ const addBorrowing = [
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
+    const { userId, bookId } = req.body; // Extract values from the request body
+    // Fetch the book from the database
+    const book = await Book.findOne({bookId});
 
-    const { memberId, bookId } = req.body; // Extract values from the request body
+    // Decrease availableCopies by 1
+    if (book.availableCopies > 0) {
+    book.availableCopies -= 1;
+    await book.save();  // Save the updated book document
+    } else {
+    return res.status(400).json({ message: 'No available copies left to borrow' });
+    }
     const borrowDate = new Date(); // Current date when the book is borrowed
     const dueDate = new Date(borrowDate); // Copy the borrowDate
     dueDate.setDate(borrowDate.getDate() + 10);
     // Create a new borrowing record
     const newBorrowing = new Borrowing({
       borrowingId: new mongoose.Types.ObjectId().toString(), // Generate a unique borrowing ID
-      memberId, // Member who is borrowing the book
+      userId, // Member who is borrowing the book
       bookId, // The book being borrowed
       borrowDate,  
       dueDate,  // Due date of the book
@@ -68,7 +93,7 @@ const updateBorrowing = async (req, res) => {
 // Delete a borrowing
 const deleteBorrowing = async (req, res) => {
   try {
-    await Borrowing.findByIdAndDelete(req.params.id);
+    await Borrowing.findOneAndDelete({ borrowingId: req.params.id });
     res.status(200).json({ message: 'Borrowing deleted!' });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -80,7 +105,8 @@ const returnBook = async (req, res) => {
     const returnDate = new Date();
 
     // Find borrowing record
-    const borrowing = await Borrowing.findById(borrowingId).populate('memberId bookId');
+    const borrowing = await Borrowing.findOne({borrowingId}).populate('userId bookId');
+
     if (!borrowing) {
       return res.status(404).json({ message: 'Borrowing record not found' });
     }
@@ -102,7 +128,7 @@ const returnBook = async (req, res) => {
     if (fineAmount > 0) {
       const newFine = new Fine({
         fineId:new ObjectId(),
-        memberId: borrowing.memberId,
+        userId: borrowing.userId,
         borrowingId: borrowing.borrowingId,
         amount: fineAmount,
         paymentStatus: false,

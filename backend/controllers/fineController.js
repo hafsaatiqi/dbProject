@@ -10,7 +10,7 @@ const Fine = require('../models/fines');
   }
 };*/
 
-// Add a new fine
+// Add a new fine (delete this)
 const addFine = async (req, res) => {
   const newFine = new Fine(req.body);
   try {
@@ -21,7 +21,7 @@ const addFine = async (req, res) => {
   }
 };
 
-// Update a fine
+// Update a fine (delete this)
 const updateFine = async (req, res) => {
   try {
     const updatedFine = await Fine.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -34,7 +34,7 @@ const updateFine = async (req, res) => {
 // Delete a fine
 const deleteFine = async (req, res) => {
   try {
-    await Fine.findByIdAndDelete(req.params.id);
+    await Fine.findOneAndDelete({fineId: req.params.id}); 
     res.status(200).json({ message: 'Fine deleted!' });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -43,9 +43,9 @@ const deleteFine = async (req, res) => {
 
 const getFines = async (req, res) => {
   try {
-    const memberId = req.user.id; // Assuming authentication middleware provides the member ID
+    const userId = req.user.userId; // Assuming authentication middleware provides the member ID
 
-    const fines = await Fine.find({ memberId })
+    const fines = await Fine.find({ userId })
       .populate('borrowingId', 'bookId dueDate returnDate')
       .populate('borrowingId.bookId', 'title');
 

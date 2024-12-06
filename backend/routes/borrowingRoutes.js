@@ -8,5 +8,5 @@ router.get('/', getBorrowings);
 router.post('/borrow', addBorrowing);
 router.put('/:id', updateBorrowing);
 router.delete('/:id', deleteBorrowing);
-router.put('/return/:borrowingId', authMiddleware, returnBook);
+router.put('/return/:borrowingId', returnBook);
 module.exports = router;
