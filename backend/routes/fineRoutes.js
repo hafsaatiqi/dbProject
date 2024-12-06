@@ -8,5 +8,5 @@ router.get('/', getFines);
 router.post('/', addFine);
 router.put('/:id', updateFine);
 router.delete('/:id', deleteFine);
-router.get('/my-fines', authMiddleware, getMemberFines);
+//router.get('/my-fines', authMiddleware, getMemberFines);
 module.exports = router;

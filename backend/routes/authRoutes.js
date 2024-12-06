@@ -58,7 +58,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
-const {hash1}  = require('./utils/helpers');
+const {hash1}  = require('../utils/helpers');
 const router = express.Router();
 
 // Middleware to verify admin access
