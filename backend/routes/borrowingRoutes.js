@@ -8,5 +8,9 @@ router.get('/', getBorrowings);
 router.post('/borrow', addBorrowing);
 router.put('/:id', updateBorrowing);
 router.delete('/:id', deleteBorrowing);
+<<<<<<< Updated upstream
 router.put('/return/:borrowingId', returnBook);
+=======
+router.put('/return/:id', returnBook);
+>>>>>>> Stashed changes
 module.exports = router;

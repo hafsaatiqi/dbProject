@@ -99,14 +99,22 @@ const deleteBorrowing = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+//returning borrowed book
+
 const returnBook = async (req, res) => {
   try {
+    console.log(req.params);
     const { borrowingId } = req.params;
     const returnDate = new Date();
 
     // Find borrowing record
+<<<<<<< Updated upstream
     const borrowing = await Borrowing.findOne({borrowingId}).populate('userId bookId');
 
+=======
+    const borrowing = await Borrowing.findOne({borrowingId}).populate('memberId bookId');
+>>>>>>> Stashed changes
     if (!borrowing) {
       return res.status(404).json({ message: 'Borrowing record not found' });
     }
@@ -145,4 +153,6 @@ const returnBook = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+
 module.exports = { getBorrowings, addBorrowing, updateBorrowing, deleteBorrowing, returnBook};
