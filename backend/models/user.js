@@ -18,6 +18,7 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
+    //enum: ['admin', 'librarian', 'member'],
     enum: ['admin', 'librarian', 'member'],
     default: 'member',
   },
@@ -31,6 +32,7 @@ userSchema.pre('save', async function (next) {
 });
 
 userSchema.methods.comparePassword = function (enteredPassword) {
+  console.log(enteredPassword, "-----", this.password);
   return bcrypt.compare(enteredPassword, this.password);
 };
 
