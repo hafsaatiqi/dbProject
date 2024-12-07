@@ -1,18 +1,29 @@
 /* General container styling for the Member Profile Page */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-y: auto; /* Allow vertical scrolling */
+}
+
+
 .member-profile-page {
   background-color: #f5f5dc; /* Beige background */
   color: #006400; /* Dark green for text */
   font-family: Arial, sans-serif;
   padding: 20px;
   max-width: 600px;
-  margin: 0 auto;
+  margin: 20px auto;
   border: 1px solid #006400; /* Green border */
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for elevation */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  box-sizing: border-box; /* Ensure padding and border are included in dimensions */
 }
 
+
 /* Heading styling */
-.member-profile-page h1 {
+.member-profile-page h1,
+.member-profile-page h2 {
   font-size: 24px;
   color: black; /* Black for headings */
   text-align: center;
@@ -36,4 +47,88 @@
   text-align: center;
   color: #808080; /* Gray for loading text */
   font-style: italic;
+}
+
+/* Styling for borrowed books and fines */
+.member-profile-page ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.member-profile-page li {
+  border: 1px solid #aaa;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column; /* Stack content */
+  gap: 8px; /* Space between elements */
+}
+
+.member-profile-page li div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; /* Ensure wrapping for small screens */
+}
+
+.member-profile-page li div p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.return-button {
+  background-color: #006400; /* Dark green button */
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-top: 5px;
+  transition: background-color 0.3s ease;
+  align-self: flex-start; /* Align button to start */
+}
+
+.return-button:hover {
+  background-color: #004d00; /* Darker green on hover */
+}
+
+/* Styling for fines section */
+.fines-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.fines-list li {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  background-color: #ffe6e6; /* Light red background for fines */
+}
+
+.fines-list li p {
+  margin: 0;
+  font-size: 14px;
+  color: #990000; /* Dark red text for fines */
+}
+
+/* Adjust layout for small screens */
+@media (max-width: 768px) {
+  .member-profile-page {
+    width: 90%;
+    padding: 15px;
+  }
+
+  .member-profile-page li div {
+    flex-direction: column; /* Stack items on small screens */
+    align-items: flex-start;
+  }
+
+  .return-button {
+    margin-top: 10px; /* Add more spacing for buttons */
+  }
 }
