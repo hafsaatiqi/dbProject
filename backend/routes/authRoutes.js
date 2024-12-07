@@ -86,6 +86,8 @@ router.post('/login', async (req, res) => {
   }
 });
 
+//!add Librarain -- admin only
+
 router.post('/add-librarian', verifyAdmin, async (req, res) => {
   const { userId, username, email, password } = req.body;
 

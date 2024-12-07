@@ -1,6 +1,6 @@
 const Book = require('../models/books');
 
-// Get all books
+// Get all books - everyone can access
 const getBooks = async (req, res) => {
   try {
     const { title, author, category, minPrice, maxPrice } = req.query;
