@@ -113,7 +113,7 @@ const returnBook = async (req, res) => {
 
     // Find borrowing record
     const borrowing = await Borrowing.findOne({borrowingId}).populate('userId bookId');
-    //const borrowing = await Borrowing.findOne({borrowingId}).populate('memberId bookId');
+    
     if (!borrowing) {
       return res.status(404).json({ message: 'Borrowing record not found' });
     }

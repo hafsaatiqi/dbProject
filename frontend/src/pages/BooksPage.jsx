@@ -1,23 +1,34 @@
 import React, { useState, useEffect } from "react";
+import { fetchBooks } from "../api"; // Import the fetchBooks API function
 import "./BooksPage.css";
 
 const BooksPage = () => {
-  const [books, setBooks] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(""); // State for the search input
+  const [books, setBooks] = useState([]); // State for all books
+  const [searchTerm, setSearchTerm] = useState(""); // State for search input
   const [filteredBooks, setFilteredBooks] = useState([]); // State for filtered books
+  const [loading, setLoading] = useState(true); // State for loading
+  const [error, setError] = useState(null); // State for errors
 
+  // Fetch books from backend on component mount
   useEffect(() => {
-    // Dummy hardcoded data
-    const bookList = [
-      { bookId: "1", title: "Book 1", author: "Author 1", genre: "Fiction" },
-      { bookId: "2", title: "Book 2", author: "Author 2", genre: "Science" },
-      { bookId: "3", title: "Book 3", author: "Author 3", genre: "History" },
-      { bookId: "4", title: "Book 4", author: "Author 4", genre: "Adventure" },
-    ];
-    setBooks(bookList);
-    setFilteredBooks(bookList); // Initially show all books
+    const fetchBooksData = async () => {
+      try {
+        setLoading(true);
+        const response = await fetchBooks(); // Call API to fetch books
+        setBooks(response.data); // Set all books
+        setFilteredBooks(response.data); // Initially, show all books
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching books:", err);
+        setError("Failed to fetch books. Please try again later.");
+        setLoading(false);
+      }
+    };
+
+    fetchBooksData();
   }, []);
 
+  // Handle search input change
   const handleSearch = (e) => {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
@@ -30,14 +41,16 @@ const BooksPage = () => {
     setFilteredBooks(filtered);
   };
 
+  // Handle borrowing a book (placeholder for future API integration)
   const handleBorrow = (bookId) => {
     alert(`Book with ID ${bookId} borrowed successfully!`);
+    // TODO: Add backend API call to mark the book as borrowed
   };
 
   return (
     <div className="bookspage">
       <h1 className="books-heading">Books List</h1>
-      
+
       {/* Search bar */}
       <input
         type="text"
@@ -47,41 +60,50 @@ const BooksPage = () => {
         className="search-bar"
       />
 
-      <table>
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Genre</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredBooks.length > 0 ? (
-            filteredBooks.map((book) => (
-              <tr key={book.bookId}>
-                <td>{book.title}</td>
-                <td>{book.author}</td>
-                <td>{book.genre}</td>
-                <td>
-                  <button
-                    className="borrow-btn"
-                    onClick={() => handleBorrow(book.bookId)}
-                  >
-                    Borrow
-                  </button>
+      {/* Loading state */}
+      {loading && <p>Loading books...</p>}
+
+      {/* Error state */}
+      {error && <p className="error-message">{error}</p>}
+
+      {/* Books table */}
+      {!loading && !error && (
+        <table>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Author</th>
+              <th>Genre</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredBooks.length > 0 ? (
+              filteredBooks.map((book) => (
+                <tr key={book._id}>
+                  <td>{book.title}</td>
+                  <td>{book.author}</td>
+                  <td>{book.genre}</td>
+                  <td>
+                    <button
+                      className="borrow-btn"
+                      onClick={() => handleBorrow(book._id)}
+                    >
+                      Borrow
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="4" style={{ textAlign: "center" }}>
+                  No books found.
                 </td>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="4" style={{ textAlign: "center" }}>
-                No books found.
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+            )}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };
