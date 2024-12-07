@@ -9,6 +9,19 @@ const Fine = require('../models/fines');
     res.status(500).json({ message: err.message });
   }
 };*/
+const getFines = async (req, res) => {
+  try {
+    const userId = req.user.userId; // Assuming authentication middleware provides the member ID
+    console.log(userId);
+    const fines = await Fine.find({ userId })
+      .populate('borrowingId', 'bookId dueDate returnDate')
+      .populate('borrowingId.bookId', 'title');
+
+    res.status(200).json(fines);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 
 // Add a new fine (delete this)
 const addFine = async (req, res) => {
@@ -41,17 +54,5 @@ const deleteFine = async (req, res) => {
   }
 };
 
-const getFines = async (req, res) => {
-  try {
-    const userId = req.user.userId; // Assuming authentication middleware provides the member ID
 
-    const fines = await Fine.find({ userId })
-      .populate('borrowingId', 'bookId dueDate returnDate')
-      .populate('borrowingId.bookId', 'title');
-
-    res.status(200).json(fines);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
 module.exports = { getFines, addFine, updateFine, deleteFine };

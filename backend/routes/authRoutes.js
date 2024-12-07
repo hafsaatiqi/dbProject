@@ -26,29 +26,45 @@ const verifyAdmin = (req, res, next) => {
   }
 };
 
+
 // POST /api/auth/signup - Member Sign-Up (Only members can sign up)
 router.post('/signup', async (req, res) => {
-  const { username, email, password } = req.body;
+  const { userId, username, email, password } = req.body; // Extract userId from the request body
 
   try {
+    // Check if a user with the same email already exists
     const userExists = await User.findOne({ email });
-    if (userExists) return res.status(400).json({ message: 'User already exists' });
+    if (userExists) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
 
-    const hashedPassword = hash1(password);
-    // Set the role to 'member' by default
-    const newUser = new User({ 
-      username, 
-      email, 
-      password: hashedPassword, 
-      role: 'member' 
+    // Check if a user with the same userId already exists
+    const userIdExists = await User.findOne({ userId });
+    if (userIdExists) {
+      return res.status(400).json({ message: 'User ID already exists' });
+    }
+
+    const hashedPassword = hash1(password); // Hash the password
+
+    // Create a new user with the input userId
+    const newUser = new User({
+      userId, // Add the userId from the request body
+      username,
+      email,
+      password: hashedPassword,
+      role: 'member', // Default role is 'member'
     });
 
+    // Save the new user to the database
     await newUser.save();
+
     res.status(201).json({ message: 'Member created successfully' });
   } catch (error) {
+    console.error('Error during sign-up:', error.message);
     res.status(500).json({ message: 'Server error' });
   }
 });
+
 
 
 // POST /api/auth/login - User Login (All roles can log in)
@@ -70,18 +86,18 @@ router.post('/login', async (req, res) => {
   }
 });
 
-
-// POST /api/auth/add-librarian - Admin adds a librarian
 router.post('/add-librarian', verifyAdmin, async (req, res) => {
-  const { username, email, password } = req.body;
+  const { userId, username, email, password } = req.body;
 
   try {
     const userExists = await User.findOne({ email });
     if (userExists) return res.status(400).json({ message: 'Librarian already exists' });
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+   // const hashedPassword = await bcrypt.hash(password, 10);
 
+    const hashedPassword = hash1(password);
     const newLibrarian = new User({ 
+      userId,
       username, 
       email, 
       password: hashedPassword, 
@@ -95,7 +111,5 @@ router.post('/add-librarian', verifyAdmin, async (req, res) => {
   }
 });
 
+
 module.exports = router;
-
-
-//authroutes userroutes serverjs env

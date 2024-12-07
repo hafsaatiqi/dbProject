@@ -1,5 +1,8 @@
 const Borrowing = require('../models/borrowing');
 const Fine = require('../models/fines');
+const User = require('../models/user'); // Adjust the path as per your directory structure
+const Book = require('../models/books'); // Adjust the path as per your directory structure
+
 const {calculateFine} = require('../utils/helpers');
 const mongoose = require('mongoose');
 const { check, validationResult } = require('express-validator');
@@ -109,12 +112,8 @@ const returnBook = async (req, res) => {
     const returnDate = new Date();
 
     // Find borrowing record
-<<<<<<< Updated upstream
     const borrowing = await Borrowing.findOne({borrowingId}).populate('userId bookId');
-
-=======
-    const borrowing = await Borrowing.findOne({borrowingId}).populate('memberId bookId');
->>>>>>> Stashed changes
+    //const borrowing = await Borrowing.findOne({borrowingId}).populate('memberId bookId');
     if (!borrowing) {
       return res.status(404).json({ message: 'Borrowing record not found' });
     }
