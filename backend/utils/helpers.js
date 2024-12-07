@@ -17,4 +17,4 @@ function hash1(input) {
   return hash.digest('hex');  // Return the hash as a hexadecimal string
 }
   module.exports = { calculateFine, hash1 };
-  
+ 

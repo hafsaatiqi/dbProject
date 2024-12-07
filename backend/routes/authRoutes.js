@@ -3,7 +3,11 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const {hash1}  = require('../utils/helpers');
+const mongoose = require('mongoose');
 const router = express.Router();
+require('dotenv').config(); // Load environment variables
+const jwtSecret = process.env.JWT_SECRET || 'default_jwt_secret'; // Default value in case the environment variable is missing
+
 
 // Middleware to verify admin access
 const verifyAdmin = (req, res, next) => {
@@ -29,7 +33,7 @@ const verifyAdmin = (req, res, next) => {
 
 // POST /api/auth/signup - Member Sign-Up (Only members can sign up)
 router.post('/signup', async (req, res) => {
-  const { userId, username, email, password } = req.body; // Extract userId from the request body
+  const {username, email, password } = req.body; // Extract userId from the request body
 
   try {
     // Check if a user with the same email already exists
@@ -39,16 +43,16 @@ router.post('/signup', async (req, res) => {
     }
 
     // Check if a user with the same userId already exists
-    const userIdExists = await User.findOne({ userId });
-    if (userIdExists) {
-      return res.status(400).json({ message: 'User ID already exists' });
-    }
+    // const userIdExists = await User.findOne({ userId });
+    // if (userIdExists) {
+    //   return res.status(400).json({ message: 'User ID already exists' });
+    // }
 
     const hashedPassword = hash1(password); // Hash the password
 
     // Create a new user with the input userId
     const newUser = new User({
-      userId, // Add the userId from the request body
+      userId: new mongoose.Types.ObjectId().toString(),// Add the userId from the request body
       username,
       email,
       password: hashedPassword,
@@ -60,8 +64,9 @@ router.post('/signup', async (req, res) => {
 
     res.status(201).json({ message: 'Member created successfully' });
   } catch (error) {
+    console.log("iskkkk");
     console.error('Error during sign-up:', error.message);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: 'Server error 1234' , error: error});
   }
 });
 
@@ -80,7 +85,8 @@ router.post('/login', async (req, res) => {
 
     // Create JWT token
     const token = jwt.sign({ userId: user._id, role: user.role }, 'your_jwt_secret', { expiresIn: '1h' });
-    res.json({ token });
+    //res.json({ token });
+    res.json({ userId: user.userId});
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }

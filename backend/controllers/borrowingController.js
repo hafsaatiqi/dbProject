@@ -11,8 +11,27 @@ const { ObjectId } = mongoose.Types;
 // Get all borrowings
 const getBorrowings = async (req, res) => {
   try {
-    const borrowing = await Borrowing.find();
+    const borrowing = await Borrowing.find().populate('book', 'title'); // Populate the 'book' field and only get the 'title' field
     res.status(200).json(borrowing);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+const getMBorrowings = async (req, res) => {
+  try {
+    // Get userId from request, assuming it's passed in the authenticated user's data
+    const userId = req.user.userId; // Or req.params.userId if it's passed as a parameter
+    
+    // Find borrowings where userId matches
+    const borrowings = await Borrowing.find({ userId }).populate('bookId', 'title author');
+    
+    // If no borrowings found for this user
+    if (!borrowings.length) {
+      return res.status(404).json({ message: 'No borrowings found for this user.' });
+    }
+    
+    // Respond with the borrowings data
+    res.status(200).json(borrowings);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -181,7 +200,7 @@ const returnBook = async (req, res) => {
     if (!book) {
       return res.status(404).json({ message: 'Book not found' });
     }
-
+    book.availableCopies+=1;
     // Check if the book has already been returned
     console.log(borrowing.id);
     console.log(borrowing.isReturned);
@@ -200,7 +219,7 @@ const returnBook = async (req, res) => {
     // Add a fine record if applicable
     if (fineAmount > 0) {
       const newFine = new Fine({
-        fineId: new ObjectId(),
+        fineId: new ObjectId(),  //new mongoose.Types.ObjectId().toString()
         userId: borrowing.userId,  // Directly using userId
         borrowingId: borrowing.borrowingId,
         amount: fineAmount,
@@ -221,5 +240,4 @@ const returnBook = async (req, res) => {
 
 
 
-
-module.exports = { getBorrowings, addBorrowing, updateBorrowing, deleteBorrowing, returnBook};
+module.exports = { getBorrowings, addBorrowing, updateBorrowing, deleteBorrowing, getMBorrowings, returnBook};

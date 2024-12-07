@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { fetchBooks } from "../api"; // Import the fetchBooks API function
 import "./BooksPage.css";
+import axios from "axios";
+
 
 const BooksPage = () => {
   const [books, setBooks] = useState([]); // State for all books
@@ -8,6 +10,8 @@ const BooksPage = () => {
   const [filteredBooks, setFilteredBooks] = useState([]); // State for filtered books
   const [loading, setLoading] = useState(true); // State for loading
   const [error, setError] = useState(null); // State for errors
+  const userId = localStorage.getItem('userId');
+
 
   // Fetch books from backend on component mount
   useEffect(() => {
@@ -36,15 +40,43 @@ const BooksPage = () => {
       (book) =>
         book.title.toLowerCase().includes(term) ||
         book.author.toLowerCase().includes(term) ||
-        book.genre.toLowerCase().includes(term)
+        book.genre.toLowerCase().includes(term) ||
+        book.publisher?.toLowerCase().includes(term) || // Include publisher
+        book.language?.toLowerCase().includes(term)    // Include language
     );
     setFilteredBooks(filtered);
   };
 
   // Handle borrowing a book (placeholder for future API integration)
-  const handleBorrow = (bookId) => {
-    alert(`Book with ID ${bookId} borrowed successfully!`);
-    // TODO: Add backend API call to mark the book as borrowed
+  const handleBorrow = async (bookId) => {
+    const userId = "6754cde1f7499d84e04b79a7"//localStorage.getItem("userId"); // Replace this with the actual logged-in user's ID, fetched from context or state.
+    // setLoading(true); // Set loading to true when request starts
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/borrowings/borrow", // Adjust the API URL as per your backend
+        { userId, bookId }
+      );
+      alert("Book borrowed successfully!");
+  
+      // Update the book's availableCopies in the UI
+      setBooks((prevBooks) =>
+        prevBooks.map((book) =>
+          book.bookId === bookId
+            ? { ...book, availableCopies: book.availableCopies - 1 }
+            : book
+        )
+      );
+      setFilteredBooks((prevFilteredBooks) =>
+        prevFilteredBooks.map((book) =>
+          book.bookId === bookId
+            ? { ...book, availableCopies: book.availableCopies - 1 }
+            : book
+        )
+      );
+    } catch (error) {
+      console.error("Error borrowing book:", error.response?.data || error);
+      alert(error.response?.data?.errors?.[0]?.msg || "Failed to borrow book.");
+    }
   };
 
   return (
@@ -74,6 +106,12 @@ const BooksPage = () => {
               <th>Title</th>
               <th>Author</th>
               <th>Genre</th>
+              <th>Publisher</th>
+              <th>ISBN</th>
+              <th>Language</th>
+              <th>Year Published</th>
+              <th>Number of Copies</th>
+              <th>Available Copies</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -84,24 +122,32 @@ const BooksPage = () => {
                   <td>{book.title}</td>
                   <td>{book.author}</td>
                   <td>{book.genre}</td>
+                  <td>{book.publisher}</td>
+                  <td>{book.isbn}</td>
+                  <td>{book.language}</td>
+                  <td>{book.yearPublished}</td>
+                  <td>{book.numberOfCopies}</td>
+                  <td>{book.availableCopies}</td>
                   <td>
-                    <button
-                      className="borrow-btn"
-                      onClick={() => handleBorrow(book._id)}
-                    >
-                      Borrow
-                    </button>
+                    {book.availableCopies > 0 ? (
+                      <button
+                        onClick={() => handleBorrow(book.bookId)}
+                        className="borrow-button"
+                      >
+                        Borrow
+                      </button>
+                    ) : (
+                      <span className="not-available">Not Available</span>
+                    )}
                   </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="4" style={{ textAlign: "center" }}>
-                  No books found.
-                </td>
+                <td colSpan="10">No books found.</td>
               </tr>
-            )}
-          </tbody>
+  )}
+</tbody>
         </table>
       )}
     </div>
