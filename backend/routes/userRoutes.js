@@ -1,10 +1,15 @@
 const express = require('express');
 const User = require('../models/user');
 const router = express.Router();
+const { authMiddleware } = require('../middleware/authMiddleware');
 
-// GET all users
-router.get('/', async (req, res) => {
+
+// GET all users - admin access
+router.get('/', authMiddleware ,async (req, res) => {
   try {
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ message: 'Access denied.Admins only!' });
+    }
     const users = await User.find();
     res.json(users);
   } catch (error) {
@@ -12,9 +17,12 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET user by ID
-router.get('/:id', async (req, res) => {
+// GET user by ID - admin access
+router.get('/:id', authMiddleware, async (req, res) => {
   try {
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ message: 'Access denied.Admins only!' });
+    }
     const user = await User.findById(req.params.id);
     if (!user) return res.status(404).json({ message: 'User not found' });
     res.json(user);
@@ -23,9 +31,12 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// PUT update user details (e.g., update password, role)
-router.put('/:id', async (req, res) => {
+// PUT update user details (e.g., update password, role) -- admin only
+router.put('/:id', authMiddleware ,async (req, res) => {
   try {
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ message: 'Access denied.Admins only!' });
+    }
     const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!user) return res.status(404).json({ message: 'User not found' });
     res.json(user);
@@ -34,9 +45,12 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// DELETE a user
-router.delete('/:id', async (req, res) => {
+// DELETE a user - admin only
+router.delete('/:id', authMiddleware,async (req, res) => {
   try {
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ message: 'Access denied.Admins only!' });
+    }
     const user = await User.findByIdAndDelete(req.params.id);
     if (!user) return res.status(404).json({ message: 'User not found' });
     res.json({ message: 'User deleted' });

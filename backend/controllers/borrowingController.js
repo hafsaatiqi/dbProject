@@ -96,23 +96,24 @@ const updateBorrowing = async (req, res) => {
 // Delete a borrowing
 const deleteBorrowing = async (req, res) => {
   try {
-    await Borrowing.findOneAndDelete({ borrowingId: req.params.id });
+    await Borrowing.findByIdAndDelete(req.params.id );
     res.status(200).json({ message: 'Borrowing deleted!' });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
 
-//returning borrowed book
-
+//!WORKS BUT DOSENT HAVE BOOKID AND USERID CHECK
+/*
 const returnBook = async (req, res) => {
   try {
-    console.log(req.params);
-    const { borrowingId } = req.params;
+    console.log(req.params.id);
+    const { id } = req.params;  // Correcting the destructuring
+
     const returnDate = new Date();
 
-    // Find borrowing record
-    const borrowing = await Borrowing.findOne({borrowingId}).populate('userId bookId');
+    // Find borrowing record by _id
+    const borrowing = await Borrowing.findOne({ _id: id });
     
     if (!borrowing) {
       return res.status(404).json({ message: 'Borrowing record not found' });
@@ -129,19 +130,19 @@ const returnBook = async (req, res) => {
     // Update borrowing record
     borrowing.returnDate = returnDate;
     borrowing.isReturned = true;
-    await borrowing.save();
+    await borrowing.save();  // Save the updated borrowing document
 
     // Add a fine record if applicable
     if (fineAmount > 0) {
       const newFine = new Fine({
-        fineId:new ObjectId(),
-        userId: borrowing.userId,
+        fineId: new ObjectId(),
+        userId: borrowing.userId,  // Directly using userId, no population needed
         borrowingId: borrowing.borrowingId,
         amount: fineAmount,
         paymentStatus: false,
         fineDate: new Date()
       });
-      await newFine.save();
+      await newFine.save();  // Save the fine record
     }
 
     res.status(200).json({
@@ -152,6 +153,73 @@ const returnBook = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+*/
+//!
+
+const returnBook = async (req, res) => {
+  try {
+    console.log(req.params.id);
+    const { id } = req.params;
+
+    const returnDate = new Date();
+
+    // Find borrowing record by _id
+    const borrowing = await Borrowing.findOne({ _id: id });
+    
+    if (!borrowing) {
+      return res.status(404).json({ message: 'Borrowing record not found' });
+    }
+
+    // Check if the user exists
+    const user = await User.findOne({ userId: borrowing.userId });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Check if the book exists
+    const book = await Book.findOne({ bookId: borrowing.bookId });
+    if (!book) {
+      return res.status(404).json({ message: 'Book not found' });
+    }
+
+    // Check if the book has already been returned
+    console.log(borrowing.id);
+    console.log(borrowing.isReturned);
+    if (borrowing.isReturned) {
+      return res.status(400).json({ message: 'Book already returned' });
+    }
+
+    // Calculate fine if overdue
+    const fineAmount = calculateFine(borrowing.dueDate, returnDate);
+
+    // Update borrowing record
+    borrowing.returnDate = returnDate;
+    borrowing.isReturned = true;
+    await borrowing.save();  // Save the updated borrowing document
+
+    // Add a fine record if applicable
+    if (fineAmount > 0) {
+      const newFine = new Fine({
+        fineId: new ObjectId(),
+        userId: borrowing.userId,  // Directly using userId
+        borrowingId: borrowing.borrowingId,
+        amount: fineAmount,
+        paymentStatus: "Unpaid",
+        fineDate: new Date()
+      });
+      await newFine.save();  // Save the fine record
+    }
+
+    res.status(200).json({
+      message: 'Book returned successfully',
+      fine: fineAmount > 0 ? `Fine of $${fineAmount} incurred` : 'No fine incurred',
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
 
 
 module.exports = { getBorrowings, addBorrowing, updateBorrowing, deleteBorrowing, returnBook};
