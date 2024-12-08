@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { fetchBooks } from "../api"; // Import the fetchBooks API function
 import "./BooksPage.css";
 import axios from "axios";
+import { jwtDecode } from 'jwt-decode';
+
 
 
 const BooksPage = () => {
@@ -10,7 +12,7 @@ const BooksPage = () => {
   const [filteredBooks, setFilteredBooks] = useState([]); // State for filtered books
   const [loading, setLoading] = useState(true); // State for loading
   const [error, setError] = useState(null); // State for errors
-  const userId = localStorage.getItem('userId');
+  //const userId = localStorage.getItem('userId'); //!
 
 
   // Fetch books from backend on component mount
@@ -49,12 +51,25 @@ const BooksPage = () => {
 
   // Handle borrowing a book (placeholder for future API integration)
   const handleBorrow = async (bookId) => {
-    const userId = "6754cde1f7499d84e04b79a7"//localStorage.getItem("userId"); // Replace this with the actual logged-in user's ID, fetched from context or state.
-    // setLoading(true); // Set loading to true when request starts
+    //!
+    const token = localStorage.getItem('token');
+    console.log('Token:', token); //! debug
+    if (!token) {
+      setError('Please login to borrow books');
+      return;
+    }
+  
+    const decodedToken = jwtDecode(token);
+    console.log('Decoded Token:', decodedToken); //! debug
+    const userId = decodedToken.userId;
+    console.log("UserId: ",userId);
+    //!
+    //const userId = "6755c3431a44183877fabfdb"//! //localStorage.getItem("userId"); // Replace this with the actual logged-in user's ID, fetched from context or state.
+    setLoading(true); // Set loading to true when request starts
     try {
       const response = await axios.post(
         "http://localhost:5000/api/borrowings/borrow", // Adjust the API URL as per your backend
-        { userId, bookId }
+        { userId, bookId } 
       );
       alert("Book borrowed successfully!");
   

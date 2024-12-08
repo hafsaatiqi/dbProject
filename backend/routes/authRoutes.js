@@ -78,15 +78,20 @@ router.post('/login', async (req, res) => {
 
   try {
     const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ message: 'Invalid credentials' });
+    if (!user) return res.status(400).json({ message: 'Invalid email' });
     const hashed = hash1(password);
     const isMatch = await user.comparePassword(hashed);
-    if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
+    if (!isMatch) return res.status(400).json({ message: 'Invalid password' });
 
     // Create JWT token
     const token = jwt.sign({ userId: user._id, role: user.role }, 'your_jwt_secret', { expiresIn: '1h' });
     //res.json({ token });
-    res.json({ userId: user.userId});
+    res.json({ 
+      token,
+      userId: user.userId,
+      username: user.username,
+      email: user.email
+    });
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }

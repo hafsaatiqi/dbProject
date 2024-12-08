@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'; // Import axios for API calls
 import './LoginPage.css';
+import { login } from '../api/centralApi'; //!
+import { signup } from '../api/centralApi'; //!
+import jwt_decode from "jwt-decode";
 const mongoose = require('mongoose');
 
 const LoginPage = () => {
@@ -13,15 +16,23 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
   // API URL
-  const apiUrl = 'http://localhost:5000/api/auth'; // Update with your backend URL
-
+  //const apiUrl = 'http://localhost:5000/api/auth'; // Update with your backend URL
+  const apiUrl = 'http://127.0.0.1:5000/api/auth'; 
   const handleLogin = async (e) => {
     e.preventDefault();
+    console.log("function triggered"); // debugging line
+    console.log('Form submitted with email:', email);  // Debugging line to check if form is being submitted
     try {
       const response = await axios.post(`${apiUrl}/login`, { email, password });
-      localStorage.setItem('userId', response.data.userId); // Store the token in localStorage
-      setError('');
-      navigate('/dashboard');
+      console.log('Response received:', response);  // Debugging: Check response object
+      //!
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token); // Store the JWT token
+        setError('');
+        navigate('/dashboard'); //!  // Redirect to dashboard on successful login
+      } else {
+        console.error('Token not found in response');
+      }
        // Redirect to dashboard on successful login
     } catch (err) {
       setError(err.response ? err.response.data.message : 'Error logging in');
