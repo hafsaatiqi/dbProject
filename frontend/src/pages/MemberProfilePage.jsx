@@ -1,34 +1,71 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./MemberProfilePage.css";
+// State for errors
+
+import { jwtDecode } from 'jwt-decode';
 
 const MemberProfilePage = () => {
   const [member, setMember] = useState(null);
   const [borrowedBooks, setBorrowedBooks] = useState([]);
   const [fines, setFines] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null); 
 
-  useEffect(() => {
-    // Get member details
-    // const fetchMemberDetails = async () => {
-    //   try {
-    //     const response = await axios.get("/api/member/details"); // Replace with the actual route for member details
-    //     setMember(response.data);
-    //   } catch (err) {
-    //     console.error("Error fetching member details:", err);
-    //   }
-    // };
+   //! working 
+    useEffect(() => {
+    const fetchMemberDetails = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          setError('No user logged in!');
+          return;
+        }
+        const decodedToken = jwtDecode(token);
+        const userId = decodedToken.userId; // Extract userId from the token
+        console.log("Decoded User ID:", userId);
+    
+        const apiUrl = `http://127.0.0.1:5000/api/users/${userId}`;
+        const response = await axios.get(apiUrl);
+        setMember(response.data); // Assuming `setMember` updates the member details in state
+    
+        console.log("Member Details Fetched:", response.data);
+      } catch (err) {
+        console.error("Error fetching member details:", err);
+      }
+    };
+    fetchMemberDetails();
+  }, []);
+    //!
 
-    // Get borrowed books for the logged-in user
+    //!get borrwoing by id:
+    //!book name not added in borrowing record. if time, add
+    useEffect(() => {
     const fetchBorrowedBooks = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/borrowings/user");
+        //extraction start
+        const token = localStorage.getItem("token");
+        if (!token) {
+          setError('No user logged in!');
+          return;
+        }
+        const decodedToken = jwtDecode(token);
+        const userId = decodedToken.userId; // Extract userId from the token
+        console.log("Decoded User ID:", userId);
+        //extraction complete
+        const apiUrl = `http://127.0.0.1:5000/api/borrowings/getMB/${userId}`;
+        const response = await axios.get(apiUrl);
         setBorrowedBooks(response.data);
+        console.log("Borrow details of user fetched:", response.data);
       } catch (err) {
         console.error("Error fetching borrowed books:", err);
       }
     };
+    fetchBorrowedBooks();
+  }, []);
+    //!
 
+    useEffect(() => { //!
     // Get fines for the logged-in user
     const fetchFines = async () => {
       try {
@@ -42,7 +79,7 @@ const MemberProfilePage = () => {
     // Fetch data when component mounts
     const fetchData = async () => {
       setLoading(true);
-      await Promise.all([/*fetchMemberDetails(),*/ fetchBorrowedBooks(), fetchFines()]);
+      await Promise.all([/*fetchMemberDetails(),*/ /*fetchBorrowedBooks(),*/ fetchFines()]);
       setLoading(false);
     };
 
@@ -66,13 +103,13 @@ const MemberProfilePage = () => {
           {member ? (
             <div>
               <p>
-                <strong>Name:</strong> {member.fullName}
+                <strong>User Name:</strong> {member.username}
               </p>
               <p>
                 <strong>Email:</strong> {member.email}
               </p>
               <p>
-                <strong>Membership Expiry:</strong> {new Date(member.membershipExpiry).toLocaleDateString()}
+                <strong>Role:</strong> {member.role}
               </p>
             </div>
           ) : (
@@ -86,7 +123,7 @@ const MemberProfilePage = () => {
                 <li key={book.borrowingId}>
                   <div>
                     <p>
-                      <strong>Title:</strong> {book.title}
+                      <strong>Title:</strong> {book.bookId}
                     </p>
                     <p>
                       <strong>Borrowed Date:</strong>{" "}

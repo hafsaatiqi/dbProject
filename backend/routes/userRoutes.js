@@ -18,6 +18,7 @@ router.get('/', authMiddleware ,async (req, res) => {
 });
 
 // GET user by ID - admin access
+/*
 router.get('/:id', authMiddleware, async (req, res) => {
   try {
     if (req.user.role !== 'admin') {
@@ -30,6 +31,20 @@ router.get('/:id', authMiddleware, async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+*/
+
+//! removed admin access 
+router.get('/:id', async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+//!
+
 
 // PUT update user details (e.g., update password, role) -- admin only
 router.put('/:id', authMiddleware ,async (req, res) => {

@@ -28,7 +28,7 @@ const createAdmin = async () => {
       userId: 'a01',
       username: 'adminAuto',
       email: 'adminauto@library.com',
-      password: adminPassword,
+      password: adminPassword, 
       role: 'admin',
     });
 

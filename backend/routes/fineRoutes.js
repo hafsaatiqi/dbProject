@@ -19,6 +19,7 @@ router.get('/myfines', authMiddleware, getFines); // Add authMiddleware here
 //router.post('/addfine', authMiddleware, addFine); // Apply authMiddleware if only authenticated users can add fines
 //router.put('/:_id', authMiddleware, updateFine); // Apply authMiddleware for updates
 router.delete('/:id', authMiddleware, deleteFine); // Apply authMiddleware for deletions
+//router.get('/:id', getFineById);
 //router.delete('/:id', deleteFine);
 module.exports = router;
 //!

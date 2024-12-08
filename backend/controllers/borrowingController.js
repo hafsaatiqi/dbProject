@@ -17,14 +17,15 @@ const getBorrowings = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
 const getMBorrowings = async (req, res) => {
   try {
-    // Get userId from request, assuming it's passed in the authenticated user's data
-    const userId = req.user.userId; // Or req.params.userId if it's passed as a parameter
-    
+    const userId = req.params.id;
+    console.log("user id:", userId);
+    //const userId = req.user.userId; 
     // Find borrowings where userId matches
-    const borrowings = await Borrowing.find({ userId }).populate('bookId', 'title author');
-    
+    //const borrowings = await Borrowing.find({ userId }).populate('bookId', 'title author');
+    const borrowings = await Borrowing.find({ userId });
     // If no borrowings found for this user
     if (!borrowings.length) {
       return res.status(404).json({ message: 'No borrowings found for this user.' });
@@ -42,7 +43,8 @@ const addBorrowing = [
   // Validation rules
   check('userId').notEmpty().withMessage('Member ID is required')
     .custom(async (value) => {
-      const user = await User.findOne({userId:value});
+      //const user = await User.findOne({userId:value});//!
+      const user = await User.findById({_id:value});
       if (!user) {
         throw new Error('Member ID does not exist');
       }

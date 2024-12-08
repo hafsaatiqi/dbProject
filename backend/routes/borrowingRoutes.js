@@ -12,7 +12,8 @@ router.post('/borrow', addBorrowing);
 router.put('/:id', updateBorrowing); /// no use 
 router.delete('/delete/:id',authMiddleware,checkRole(['librarian']), deleteBorrowing);
 //router.put('/return/:borrowingId', returnBook);
-router.get('/user', authMiddleware, getMBorrowings);  // Added this route
+//router.get('/user', authMiddleware, getMBorrowings);  // Added this route
+router.get('/getMB/:id', getMBorrowings); //! removing auth 
 router.put('/return/:id',authMiddleware,checkRole(['member']), returnBook);
 module.exports = router;
 //router.delete('/:id', authMiddleware, checkRole(['admin']), deleteBook);
