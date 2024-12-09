@@ -8,13 +8,13 @@ const API = axios.create({
 // Function to fetch books
 export const fetchBooks = () => API.get("/books");
 // src/api/borrowApi.js
-export const getBorrowedBooks = async () => {
-  const response = await fetch('http://localhost:5000/api/borrowings');  // Assuming your backend is running on localhost:5000
-  if (!response.ok) {
-    throw new Error('Failed to fetch borrowed books');
-  }
-  const data = await response.json();
-  return data;
-};
-
+// export const getBorrowedBooks = async () => {
+//   const response = await fetch('http://localhost:5000/api/borrowings');  // Assuming your backend is running on localhost:5000
+//   if (!response.ok) {
+//     throw new Error('Failed to fetch borrowed books');
+//   }
+//   const data = await response.json();
+//   return data;
+// };
+export const getBorrowedBooks = () => API.get("/borrowings");
 // Export other API functions here as needed

@@ -179,13 +179,14 @@ const returnBook = async (req, res) => {
 
 const returnBook = async (req, res) => {
   try {
-    console.log(req.params.id);
-    const { id } = req.params;
+    // console.log(req.params.id);
+    const  borrowingId  = req.params.id;
+    console.log("Received Borrowing ID:", borrowingId); // Log the ID for debugging
 
     const returnDate = new Date();
 
     // Find borrowing record by _id
-    const borrowing = await Borrowing.findOne({ _id: id });
+    const borrowing = await Borrowing.findOne({borrowingId: borrowingId});
     
     if (!borrowing) {
       return res.status(404).json({ message: 'Borrowing record not found' });
@@ -203,6 +204,8 @@ const returnBook = async (req, res) => {
       return res.status(404).json({ message: 'Book not found' });
     }
     book.availableCopies+=1;
+    await book.save();
+
     // Check if the book has already been returned
     console.log(borrowing.id);
     console.log(borrowing.isReturned);

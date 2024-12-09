@@ -86,12 +86,38 @@ const MemberProfilePage = () => {
     fetchData();
   }, []);
 
-  const handleReturnBook = (borrowingId) => {
-    setBorrowedBooks((prevBooks) =>
-      prevBooks.filter((book) => book.borrowingId !== borrowingId)
+  const handleReturnBook = async (borrowingId) => {
+    try {
+      const token = localStorage.getItem("token"); // Retrieve token from localStorage
+    if (!token) {
+      alert("No token found. Please log in again.");
+      return;
+    }
+    console.log("Sending Borrowing ID:", borrowingId);
+    const response = await axios.put(
+      `http://127.0.0.1:5000/api/borrowings/return/${borrowingId}`, 
+      { borrowingId },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Send token in the Authorization header
+        },
+      }
     );
-    alert(`Book with ID: ${borrowingId} has been returned.`);
+
+    if (response.status === 200) {
+      alert(`Book with ID: ${borrowingId} has been returned successfully.`);
+      setBorrowedBooks((prevBooks) =>
+        prevBooks.filter((book) => book.borrowingId !== borrowingId)
+      );
+    } else {
+      alert(`Failed to return book. Please try again.`);
+    }
+    } catch (err) {
+      console.error("Error returning book:", err.response?.data || err.message);
+    alert(err.response?.data?.message || "Failed to return book.");
+    }
   };
+  
 
   return (
     <div className="member-profile-page">

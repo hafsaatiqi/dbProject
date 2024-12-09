@@ -65,7 +65,7 @@ const BooksPage = () => {
     console.log("UserId: ",userId);
     //!
     //const userId = "6755c3431a44183877fabfdb"//! //localStorage.getItem("userId"); // Replace this with the actual logged-in user's ID, fetched from context or state.
-    setLoading(true); // Set loading to true when request starts
+    //setLoading(true); // Set loading to true when request starts
     try {
       const response = await axios.post(
         "http://localhost:5000/api/borrowings/borrow", // Adjust the API URL as per your backend

@@ -1,14 +1,18 @@
 /* General Page Styling */
 .bookspage {
-  background-color: white !important;
-  color: #006400 !important;
-  padding: 20px !important;
+  background-color: #f9fafb; /* Light grayish background for a subtle, clean look */
+  color: #333333; /* Dark gray text for better readability */
+  padding: 30px;
+  font-family: 'Roboto', sans-serif; /* Professional and readable font */
 }
 
+/* Heading Styling */
 .bookspage h1 {
-  color: black; /* Gold for headings */
-  font-size: 2rem;
+  color: #2e8b57; /* A softer green (sea green) for headings */
+  font-size: 2.5rem;
   margin-bottom: 20px;
+  text-align: center; /* Centered heading */
+  font-weight: 600;
 }
 
 /* Table Styling */
@@ -16,60 +20,74 @@
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+  background-color: #ffffff; /* Clean white table */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for the table */
+  border-radius: 8px;
 }
 
 .bookspage th, .bookspage td {
-  border: 1px solid #006400; /* Green borders */
-  padding: 10px;
+  padding: 12px;
   text-align: left;
+  font-size: 14px;
+  border: 1px solid #dcdcdc; /* Light gray border for a softer look */
 }
 
 .bookspage th {
-  background-color: #006400; /* Dark green background for table headers */
-  color: #fff; /* White text for headers */
+  background-color: #2e8b57; /* A more muted green for the table headers */
+  color: #ffffff; /* White text */
+  font-weight: 600;
 }
 
-/* Only the header row should have the background color */
-.bookspage thead tr {
-  background-color: #006400; /* Dark green for the header row */
-}
-
-/* Data rows should have alternating light green backgrounds */
 .bookspage tbody tr:nth-child(even) {
-  background-color: #f0fff0; /* Light green background for alternate rows */
+  background-color: #f1f8f4; /* Very light green for alternating rows */
 }
 
-/* Hover effect for data rows */
 .bookspage tbody tr:hover {
-  background-color: #d3ffd3; /* Slightly darker green for hover effect */
+  background-color: #e0f2e0; /* Subtle green hover effect */
+  transition: background-color 0.3s ease; /* Smooth transition on hover */
 }
 
-/* Ensure first row in the body is not affected */
-.bookspage tbody tr:first-child {
-  background-color: transparent; /* Prevent first row in body from being styled */
-}
-.bookspage .borrow-btn {
-  padding: 8px 12px;
-  background-color: #006400; /* Dark green background */
-  color: white;
+/* Borrow Button */
+.bookspage .borrow-button {
+  padding: 10px 16px;
+  background-color: #2e8b57; /* Muted green background */
+  color: #ffffff; /* White text */
   border: none;
   cursor: pointer;
-  border-radius: 4px;
-  transition: background-color 0.2s ease;
+  border-radius: 5px; /* Slightly rounded corners for a modern touch */
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
 }
 
-.bookspage .borrow-btn:hover {
-  background-color: #004d00; /* Slightly darker green on hover */
+.bookspage .borrow-button:hover {
+  background-color: #27a06f; /* Slightly darker green on hover */
+  transform: scale(1.05); /* Slight zoom effect on hover */
 }
+
 /* Search Bar Styling */
 .search-bar {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   margin-bottom: 20px;
-  border: 1px solid #006400;
+  border: 1px solid #dcdcdc; /* Light gray border for the search bar */
   border-radius: 5px;
   font-size: 16px;
   box-sizing: border-box;
+  outline: none;
 }
 
-/* Table and other styles remain unchanged */
+.search-bar:focus {
+  border-color: #2e8b57; /* Change border color to green when focused */
+}
+
+/* Responsive Table Styling */
+@media screen and (max-width: 768px) {
+  .bookspage table {
+    font-size: 12px; /* Smaller text for smaller screens */
+  }
+
+  .bookspage h1 {
+    font-size: 2rem; /* Adjust heading size for small screens */
+  }
+}
