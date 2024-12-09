@@ -11,7 +11,8 @@ const { ObjectId } = mongoose.Types;
 // Get all borrowings
 const getBorrowings = async (req, res) => {
   try {
-    const borrowing = await Borrowing.find().populate('book', 'title'); // Populate the 'book' field and only get the 'title' field
+    //const borrowing = await Borrowing.find().populate('book', 'title'); // Populate the 'book' field and only get the 'title' field
+    const borrowing = await Borrowing.find(); // Populate the 'book' field and only get the 'title' field
     res.status(200).json(borrowing);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -177,6 +178,9 @@ const returnBook = async (req, res) => {
 */
 //!
 
+
+//! working but does not delete the record after.
+/*
 const returnBook = async (req, res) => {
   try {
     // console.log(req.params.id);
@@ -186,14 +190,15 @@ const returnBook = async (req, res) => {
     const returnDate = new Date();
 
     // Find borrowing record by _id
-    const borrowing = await Borrowing.findOne({borrowingId: borrowingId});
+    const borrowing = await Borrowing.findById(req.params.id);
     
     if (!borrowing) {
       return res.status(404).json({ message: 'Borrowing record not found' });
     }
+    console.log("user id in the borrowing record: ", borrowing.userId )
 
     // Check if the user exists
-    const user = await User.findOne({ userId: borrowing.userId });
+    const user = await User.findById(borrowing.userId);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -242,7 +247,64 @@ const returnBook = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+*/
+//!
 
+//!adding delete record functionality:
+const returnBook = async (req, res) => {
+  try {
+    const borrowingId = req.params.id;
+    const returnDate = new Date();
+
+    // Find borrowing record by _id
+    const borrowing = await Borrowing.findById(borrowingId);
+
+    if (!borrowing) {
+      return res.status(404).json({ message: 'Borrowing record not found' });
+    }
+
+    // Check if the book exists
+    const book = await Book.findOne({ bookId: borrowing.bookId });
+    if (!book) {
+      return res.status(404).json({ message: 'Book not found' });
+    }
+    book.availableCopies += 1;
+    await book.save();
+
+    // Check if the book has already been returned
+    if (borrowing.isReturned) {
+      return res.status(400).json({ message: 'Book already returned' });
+    }
+
+    // Calculate fine if overdue
+    const fineAmount = calculateFine(borrowing.dueDate, returnDate);
+
+    // Add a fine record if applicable
+    if (fineAmount > 0) {
+      const newFine = new Fine({
+        fineId: new ObjectId(),
+        userId: borrowing.userId,
+        borrowingId: borrowing.borrowingId,
+        amount: fineAmount,
+        paymentStatus: "Unpaid",
+        fineDate: new Date(),
+      });
+      await newFine.save();
+    }
+
+    // Delete the borrowing record
+    await Borrowing.findByIdAndDelete(borrowingId);
+
+    res.status(200).json({
+      message: 'Book returned and borrowing record deleted successfully',
+      fine: fineAmount > 0 ? `Fine of $${fineAmount} incurred` : 'No fine incurred',
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+//!
 
 
 module.exports = { getBorrowings, addBorrowing, updateBorrowing, deleteBorrowing, getMBorrowings, returnBook};

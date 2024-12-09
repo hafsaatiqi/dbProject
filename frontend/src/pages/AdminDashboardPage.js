@@ -107,7 +107,7 @@ const AdminDashboardPage = () => {
   return (
     <div className="admin-dashboard">
       <h1>Admin Dashboard</h1>
-      <p>Welcome to the Admin Dashboard. Here you can manage books, members, and borrowings.</p>
+      <p>Welcome to the Admin Dashboard.</p>
       <div className="button-container">
         <button onClick={() => navigate('/books')} className="nav-button">
           View Books
