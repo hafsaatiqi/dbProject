@@ -31,9 +31,6 @@ const getMBorrowings = async (req, res) => {
     if (!borrowings.length) {
       return res.status(404).json({ message: 'No borrowings found for this user.' });
     }
-    
-    // Respond with the borrowings data
-    res.status(200).json(borrowings);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -118,9 +115,14 @@ const updateBorrowing = async (req, res) => {
 // Delete a borrowing
 const deleteBorrowing = async (req, res) => {
   try {
+    console.log('ID received on server:', req.params.id); // Log the ID received
+    console.log('abc');
+    console.log('Request received at /delete/:id:', req.params.id);
+
     await Borrowing.findByIdAndDelete(req.params.id );
     res.status(200).json({ message: 'Borrowing deleted!' });
   } catch (err) {
+    console.error(error.response?.data || error.message);
     res.status(500).json({ message: err.message });
   }
 };
@@ -278,6 +280,9 @@ const returnBook = async (req, res) => {
 
     // Calculate fine if overdue
     const fineAmount = calculateFine(borrowing.dueDate, returnDate);
+    borrowing.returnDate = returnDate;
+    borrowing.isReturned = true;
+    await borrowing.save();  // Save the updated borrowing document
 
     // Add a fine record if applicable
     if (fineAmount > 0) {
@@ -293,7 +298,7 @@ const returnBook = async (req, res) => {
     }
 
     // Delete the borrowing record
-    await Borrowing.findByIdAndDelete(borrowingId);
+    //await Borrowing.findByIdAndDelete(borrowingId);
 
     res.status(200).json({
       message: 'Book returned and borrowing record deleted successfully',

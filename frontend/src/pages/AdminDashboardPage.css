@@ -1,22 +1,23 @@
 /* General container styling for Admin Dashboard */
 .admin-dashboard {
-  background-color: #f5f5dc; /* Beige background */
-  color: #006400; /* Dark green for text */
-  font-family: Arial, sans-serif;
-  padding: 20px;
+  background-color: #f9fafb; /* Light grayish background */
+  color: #333333; /* Dark gray text for better readability */
+  font-family: 'Roboto', sans-serif; /* Professional and readable font */
+  padding: 30px;
   max-width: 600px;
   margin: 0 auto;
-  border: 1px solid #006400; /* Green border */
+  border: 1px solid #dcdcdc; /* Light gray border */
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for elevation */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for elevation */
 }
 
 /* Heading styling */
 .admin-dashboard h1 {
-  font-size: 24px;
-  color: black; /* Black for headings */
-  text-align: center;
+  color: #2e8b57; /* A softer green (sea green) for headings */
+  font-size: 2.5rem;
   margin-bottom: 20px;
+  text-align: center;
+  font-weight: 600;
 }
 
 /* Paragraphs */
@@ -31,18 +32,19 @@
 .nav-button {
   font-size: 16px;
   color: white;
-  background-color: #006400; /* Dark green button */
+  background-color: #2e8b57; /* Muted green button */
   border: none;
   padding: 10px 20px;
   margin: 10px 0;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 /* Hover effect */
 .nav-button:hover {
-  background-color: #004d00; /* Darker green on hover */
+  background-color: #27a06f; /* Slightly darker green on hover */
+  transform: scale(1.05); /* Slight zoom effect on hover */
 }
 
 /* Button container for proper alignment */
@@ -52,4 +54,15 @@
   align-items: center;
   gap: 10px;
   margin-top: 20px;
+}
+
+/* Responsive styling for small screens */
+@media screen and (max-width: 768px) {
+  .admin-dashboard {
+    max-width: 100%; /* Adjust container width for smaller screens */
+  }
+
+  .admin-dashboard h1 {
+    font-size: 2rem; /* Adjust heading size for small screens */
+  }
 }

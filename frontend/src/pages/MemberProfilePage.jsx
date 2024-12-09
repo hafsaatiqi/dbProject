@@ -108,7 +108,7 @@ const MemberProfilePage = () => {
     if (response.status === 200) {
       alert(`Book with ID: ${borrowingId} has been returned successfully.`);
       setBorrowedBooks((prevBooks) =>
-        prevBooks.filter((book) => book.borrowingId !== borrowingId)
+        prevBooks.filter((book) => book._id !== borrowingId)
       );
     } else {
       alert(`Failed to return book. Please try again.`);

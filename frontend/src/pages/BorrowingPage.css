@@ -1,15 +1,18 @@
 /* General Page Styling */
 .borrowing-page {
-  background-color: white !important;
-  color: #006400 !important;
-  padding: 20px !important;
+  background-color: #f9fafb; /* Light grayish background for a subtle, clean look */
+  color: #333333; /* Dark gray text for better readability */
+  padding: 30px;
+  font-family: 'Roboto', sans-serif; /* Professional and readable font */
 }
 
-
+/* Heading Styling */
 .borrowing-page h1 {
-  color:black; /* Gold for headings */
-  font-size: 2rem;
+  color: #2e8b57; /* A softer green (sea green) for headings */
+  font-size: 2.5rem;
   margin-bottom: 20px;
+  text-align: center; /* Centered heading */
+  font-weight: 600;
 }
 
 /* Table Styling */
@@ -17,23 +20,91 @@
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+  background-color: #ffffff; /* Clean white table */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for the table */
+  border-radius: 8px;
 }
 
 .borrowing-page th, .borrowing-page td {
-  border: 1px solid #006400; /* Green borders */
-  padding: 10px;
+  padding: 12px;
   text-align: left;
+  font-size: 14px;
+  border: 1px solid #dcdcdc; /* Light gray border for a softer look */
 }
 
 .borrowing-page th {
-  background-color: #006400; /* Dark green background for table headers */
-  color: #fff; /* White text for headers */
+  background-color: #2e8b57; /* A more muted green for the table headers */
+  color: #ffffff; /* White text */
+  font-weight: 600;
 }
 
-.borrowing-page tr:nth-child(even) {
-  background-color: #f0fff0; /* Light green background for alternate rows */
+.borrowing-page tbody tr:nth-child(even) {
+  background-color: #f1f8f4; /* Very light green for alternating rows */
 }
 
-.borrowing-page tr:hover {
-  background-color: #d3ffd3; /* Slightly darker green for hover effect */
+.borrowing-page tbody tr:hover {
+  background-color: #e0f2e0; /* Subtle green hover effect */
+  transition: background-color 0.3s ease; /* Smooth transition on hover */
+}
+/* Delete Button */
+.borrowing-page .delete-button {
+  padding: 10px 16px;
+  background-color: #df4949; /* Firebrick red background for delete */
+  color: #ffffff; /* White text */
+  border: none;
+  cursor: pointer;
+  border-radius: 5px; /* Slightly rounded corners for a modern touch */
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
+}
+
+.borrowing-page .delete-button:hover {
+  background-color: #db4040; /* Slightly darker red on hover */
+  transform: scale(1.05); /* Slight zoom effect on hover */
+}
+
+/* Borrow Button */
+.borrowing-page .borrow-button {
+  padding: 10px 16px;
+  background-color: #2e8b57; /* Muted green background */
+  color: #ffffff; /* White text */
+  border: none;
+  cursor: pointer;
+  border-radius: 5px; /* Slightly rounded corners for a modern touch */
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
+}
+
+.borrowing-page .borrow-button:hover {
+  background-color: #27a06f; /* Slightly darker green on hover */
+  transform: scale(1.05); /* Slight zoom effect on hover */
+}
+
+/* Search Bar Styling */
+.search-bar {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #dcdcdc; /* Light gray border for the search bar */
+  border-radius: 5px;
+  font-size: 16px;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.search-bar:focus {
+  border-color: #2e8b57; /* Change border color to green when focused */
+}
+
+/* Responsive Table Styling */
+@media screen and (max-width: 768px) {
+  .borrowing-page table {
+    font-size: 12px; /* Smaller text for smaller screens */
+  }
+
+  .borrowing-page h1 {
+    font-size: 2rem; /* Adjust heading size for small screens */
+  }
 }
