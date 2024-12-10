@@ -9,6 +9,8 @@ import Navigation from './components/Navigation';
 import ManageBooksPage from './pages/ManageBooksPage';
 import CurrentRoute from './components/CurrentRoute';  // Import the CurrentRoute component
 import LoginPage from './pages/LoginPage';
+import ManageMembersPage from './pages/ManageMembersPage'; //! Adjust the path as needed
+
 import './App.css';
 
 function App() {
@@ -23,8 +25,12 @@ function App() {
         <Route path="/borrow" element={<BorrowingPage />} />
         <Route path="/profile" element={<MemberProfilePage />} />
         <Route path="/admin" element={<AdminDashboardPage />} />
+<<<<<<< Updated upstream
         <Route path="/manage-books" element={<ManageBooksPage />} />
 
+=======
+        <Route path="/members" element={<ManageMembersPage />} /> //!!!!
+>>>>>>> Stashed changes
       </Routes>
     </Router>
   );

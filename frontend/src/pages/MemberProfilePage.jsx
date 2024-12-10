@@ -65,21 +65,49 @@ const MemberProfilePage = () => {
   }, []);
     //!
 
-    useEffect(() => { //!
-    // Get fines for the logged-in user
-    const fetchFines = async () => {
-      try {
-        const response = await axios.get("/api/myfines"); // This will now hit the correct endpoint
-        setFines(response.data);
-      } catch (err) {
-        console.error("Error fetching fines:", err);
-      }
-    };
 
+    //!fine by id:
+    useEffect(() => {
+      const fetchUserFine = async () => {
+        try {
+          //extraction start
+          const token = localStorage.getItem("token");
+          if (!token) {
+            setError('No user logged in!');
+            return;
+          }
+          const decodedToken = jwtDecode(token);
+          const userId = decodedToken.userId; // Extract userId from the token
+          console.log("Decoded FIne ID:", userId);
+          //extraction complete
+          const apiUrl = `http://127.0.0.1:5000/api/fines/getMF/${userId}`;
+          const response = await axios.get(apiUrl);
+          setFines(response.data);
+          console.log("Fine details of user fetched:", response.data);
+        } catch (err) {
+          console.error("Error fetching fines", err);
+        }
+      };
+      fetchUserFine();
+    }, []);
+    //!
+
+  //   useEffect(() => { //!
+  //   // Get fines for the logged-in user
+  //   const fetchFines = async () => {
+  //     try {
+  //       const response = await axios.get("/api/myfines"); // This will now hit the correct endpoint
+  //       setFines(response.data);
+  //     } catch (err) {
+  //       console.error("Error fetching fines:", err);
+  //     }
+  //   };
+
+  useEffect(() => {
     // Fetch data when component mounts
     const fetchData = async () => {
       setLoading(true);
-      await Promise.all([/*fetchMemberDetails(),*/ /*fetchBorrowedBooks(),*/ fetchFines()]);
+      await Promise.all([/*fetchMemberDetails(),*/ /*fetchBorrowedBooks(),*/ /*fetchFines()*/]);
       setLoading(false);
     };
 
@@ -180,9 +208,9 @@ const MemberProfilePage = () => {
                   <p>
                     <strong>Amount:</strong> ${fine.amount}
                   </p>
-                  <p>
+                  {/* <p>
                     <strong>Reason:</strong> {fine.reason}
-                  </p>
+                  </p> */}
                 </li>
               ))}
             </ul>

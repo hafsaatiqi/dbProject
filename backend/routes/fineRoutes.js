@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getFines, addFine, updateFine, deleteFine, getMemberFines } = require('../controllers/fineController');
+const { getFines, addFine, updateFine, deleteFine, getMemberFines, getMFines } = require('../controllers/fineController');
 const { authMiddleware } = require('../middleware/authMiddleware');
 
 /*
@@ -21,5 +21,6 @@ router.get('/myfines', authMiddleware, getFines); // Add authMiddleware here
 router.delete('/:id', authMiddleware, deleteFine); // Apply authMiddleware for deletions
 //router.get('/:id', getFineById);
 //router.delete('/:id', deleteFine);
+router.get('/getMF/:id', getMFines);
 module.exports = router;
 //!

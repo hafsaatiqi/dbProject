@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode'; 
 import './AdminDashboardPage.css';
 
+
 const AdminDashboardPage = () => {
   const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState(null);
@@ -20,8 +21,13 @@ const AdminDashboardPage = () => {
         if (userRole === 'admin') {
           setIsAdmin(true);
         } else {
+<<<<<<< Updated upstream
           setErrorMessage('Only admin users can access this page.');
           setIsAdmin(false);
+=======
+          setErrorMessage('Acess Denied. This page is for admins only!');
+          setIsAdmin(false); // User is not an admin
+>>>>>>> Stashed changes
         }
       } catch (err) {
         console.error('Error decoding token:', err);
@@ -51,7 +57,7 @@ const AdminDashboardPage = () => {
         {/* <button onClick={() => navigate('/books')} className="nav-button">
           View Books
         </button>
-        <button onClick={() => navigate('/borrowings')} className="nav-button">
+        <button onClick={() => navigate('/borrow')} className="nav-button">
           Manage Borrowings
         </button> */}
         <button onClick={() => navigate('/members')} className="nav-button">
