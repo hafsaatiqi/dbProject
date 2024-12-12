@@ -8,6 +8,10 @@ import AdminDashboardPage from './pages/AdminDashboardPage';
 import Navigation from './components/Navigation';
 import CurrentRoute from './components/CurrentRoute';  // Import the CurrentRoute component
 import LoginPage from './pages/LoginPage';
+import ManageMembersPage from './pages/ManageMembersPage'; //! Adjust the path as needed
+import ManageBooksPage from './pages/ManageBooksPage';  //!
+
+
 import './App.css';
 
 function App() {
@@ -22,6 +26,8 @@ function App() {
         <Route path="/borrow" element={<BorrowingPage />} />
         <Route path="/profile" element={<MemberProfilePage />} />
         <Route path="/admin" element={<AdminDashboardPage />} />
+        <Route path="/members" element={<ManageMembersPage />} /> //!!!!
+        <Route path="/manage-books" element={<ManageBooksPage />} /> //! 
       </Routes>
     </Router>
   );

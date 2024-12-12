@@ -5,11 +5,23 @@ const { authMiddleware } = require('../middleware/authMiddleware');
 
 
 // GET all users - admin access
+/*
 router.get('/', authMiddleware ,async (req, res) => {
   try {
     if (req.user.role !== 'admin') {
       return res.status(403).json({ message: 'Access denied.Admins only!' });
     }
+    const users = await User.find();
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+*/
+
+//!removing auth from get all users
+router.get('/' ,async (req, res) => {
+  try {
     const users = await User.find();
     res.json(users);
   } catch (error) {

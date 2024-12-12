@@ -7,8 +7,8 @@ const { authMiddleware, checkRole } = require('../middleware/authMiddleware');
 router.get('/', getBooks); //no authentication required, anyone can do
 // router.post('/', authMiddleware, checkRole(['admin', 'librarian']), addBook);
 // router.put('/:id', authMiddleware, checkRole(['admin', 'librarian']), updateBook);
-router.post('/', authMiddleware, checkRole(['admin']), addBook);
-router.put('/:id', authMiddleware, checkRole(['admin']), updateBook);
-router.delete('/:id', authMiddleware, checkRole(['admin']), deleteBook);
+router.post('/', addBook);
+router.put('/:id', updateBook);
+router.delete('/:id', deleteBook);
 
 module.exports = router;

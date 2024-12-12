@@ -220,7 +220,7 @@ const returnBook = async (req, res) => {
 
     // Calculate fine if overdue
     const fineAmount = calculateFine(borrowing.dueDate, returnDate);
-
+    console.log(fineAmount);
     // Update borrowing record
     borrowing.returnDate = returnDate;
     borrowing.isReturned = true;
@@ -278,7 +278,8 @@ const returnBook = async (req, res) => {
 
     // Calculate fine if overdue
     const fineAmount = calculateFine(borrowing.dueDate, returnDate);
-
+    console.log("borrowing.dueDate: ", borrowing.dueDate);
+    console.log("fineAmount: ",fineAmount);
     // Add a fine record if applicable
     if (fineAmount > 0) {
       const newFine = new Fine({
@@ -303,7 +304,6 @@ const returnBook = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-
 //!
 
 

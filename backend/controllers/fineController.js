@@ -22,6 +22,29 @@ const getFines = async (req, res) => {
 };
 
 
+const getMFines = async (req, res) => {
+  try {
+    const userId = req.params.id; // Extract user ID from request parameters
+    console.log("User ID:", userId);
+
+    // Retrieve all fines for the specified user
+    const fines = await Fine.find({ userId }); 
+    console.log(fines);
+    // Check if no fines are found
+    if (!fines || fines.length === 0) {
+      return res.status(404).json({ message: 'No fines to show' });
+    }
+
+    console.log("Fines retrieved:", fines); // Log fines for debugging
+
+    // Return fines as response
+    res.status(200).json(fines);
+  } catch (err) {
+    console.error("Error fetching fines:", err.message); // Log the error
+    res.status(500).json({ message: err.message });
+  }
+};
+
 
 //!if auth is to be added in getFines
 /*
@@ -117,5 +140,5 @@ const deleteFine = async (req, res) => {
 };
 
 
-module.exports = { getFines, deleteFine };
+module.exports = { getFines, deleteFine, getMFines };
 

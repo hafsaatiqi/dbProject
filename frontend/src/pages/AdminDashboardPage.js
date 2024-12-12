@@ -60,6 +60,7 @@ import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode'; 
 import './AdminDashboardPage.css';
 
+
 const AdminDashboardPage = () => {
   const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState(null); // null means we are still checking the role
@@ -79,7 +80,7 @@ const AdminDashboardPage = () => {
         if (userRole === 'admin') {
           setIsAdmin(true); 
         } else {
-          setErrorMessage('Only admin users can access this page.');
+          setErrorMessage('Acess Denied. This page is for admins only!');
           setIsAdmin(false); // User is not an admin
         }
       } catch (err) {
@@ -112,11 +113,14 @@ const AdminDashboardPage = () => {
         <button onClick={() => navigate('/books')} className="nav-button">
           View Books
         </button>
-        <button onClick={() => navigate('/borrowings')} className="nav-button">
+        <button onClick={() => navigate('/borrow')} className="nav-button">
           Manage Borrowings
         </button>
         <button onClick={() => navigate('/members')} className="nav-button">
           Manage Members
+        </button>
+        <button onClick={() => navigate('/manage-books')} className="nav-button">
+          Manage Books
         </button>
       </div>
     </div>

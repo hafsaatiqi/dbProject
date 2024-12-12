@@ -10,7 +10,7 @@ const { authMiddleware, checkRole } = require('../middleware/authMiddleware');
 router.get('/', getBorrowings);
 router.post('/borrow', addBorrowing);
 router.put('/:id', updateBorrowing); /// no use 
-router.delete('/delete/:id',authMiddleware,checkRole(['librarian']), deleteBorrowing);
+router.delete('/delete/:id', deleteBorrowing);
 //router.put('/return/:borrowingId', returnBook);
 //router.get('/user', authMiddleware, getMBorrowings);  // Added this route
 router.get('/getMB/:id', getMBorrowings); //! removing auth 

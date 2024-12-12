@@ -1,0 +1,142 @@
+/* General Page Styling */
+.manage-books-page {
+    background-color: #f9fafb; /* Light grayish background for a subtle, clean look */
+    color: #333333; /* Dark gray text for better readability */
+    padding: 30px;
+    font-family: 'Roboto', sans-serif; /* Professional and readable font */
+  }
+  
+  /* Heading Styling */
+  .manage-books-page h1 {
+    color: #2e8b57; /* A softer green (sea green) for headings */
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    text-align: center; /* Centered heading */
+    font-weight: 600;
+  }
+  
+  /* Form Container Styling */
+  .manage-books-page .form-container {
+    margin-top: 30px;
+    background-color: #ffffff; /* Clean white background for the form */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for the form */
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  /* Input and Button Styling */
+  .manage-books-page input,
+  .manage-books-page button {
+    margin: 10px 0;
+    padding: 10px;
+    width: 100%;
+    font-size: 16px;
+    border: 1px solid #dcdcdc; /* Light gray border for inputs and buttons */
+    border-radius: 5px; /* Rounded corners */
+    box-sizing: border-box;
+  }
+  
+  .manage-books-page input:focus,
+  .manage-books-page button:focus {
+    outline: none;
+    border-color: #2e8b57; /* Change border color to green on focus */
+  }
+  
+  /* Button Styling */
+  .manage-books-page button {
+    background-color: #2e8b57; /* Muted green background for buttons */
+    color: #ffffff; /* White text */
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
+  }
+  
+  .manage-books-page button:hover {
+    background-color: #27a06f; /* Slightly darker green on hover */
+    transform: scale(1.05); /* Slight zoom effect on hover */
+  }
+  
+  /* Error Message Styling */
+  .manage-books-page .error-message {
+    color: #e74c3c; /* Red color for error messages */
+    font-size: 16px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Book List Styling */
+  .manage-books-page ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 30px;
+  }
+  
+  .manage-books-page li {
+    margin: 15px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #ffffff; /* White background for book items */
+    padding: 12px;
+    border: 1px solid #dcdcdc; /* Light gray border */
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for each item */
+  }
+  
+  .manage-books-page li:hover {
+    background-color: #f1f8f4; /* Light green background on hover */
+  }
+  
+  .manage-books-page .book-details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .manage-books-page .book-details p {
+    font-size: 16px;
+  }
+  
+  .manage-books-page .book-details button {
+    background-color: #2e8b57; /* Green button for Edit/Delete */
+    color: #ffffff;
+    padding: 8px 8px; /* Reduced padding for smaller buttons */
+    margin-left: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 12px; /* Smaller font size */
+    width: 80px; /* Set a fixed width for the button */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .manage-books-page .book-details button:hover {
+    background-color: #27a06f; /* Slightly darker green on hover */
+    transform: scale(1.05); /* Slight zoom effect on hover */
+  }
+  
+  
+  
+  /* Responsive Styling */
+  @media screen and (max-width: 768px) {
+    .manage-books-page h1 {
+      font-size: 2rem; /* Adjust heading size for smaller screens */
+    }
+  
+    .manage-books-page input,
+    .manage-books-page button {
+      font-size: 14px; /* Smaller text size for smaller screens */
+    }
+  
+    .manage-books-page li {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .manage-books-page .book-details {
+      width: 100%;
+      justify-content: flex-start;
+    }
+  }
